@@ -16,14 +16,29 @@ class MyButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // 下面的 IconButton 和 FloatingActionButton 都只有 onPress
+    // 要处理复杂的手势，需要使用 GestureDetector
     return GestureDetector(
+      // 点击
       onTap: () {
         Fluttertoast.showToast(
             msg: 'MyButton was tapped!'
         );
       },
+      // 缩放
+      onScaleEnd: (details) {
+        Fluttertoast.showToast(
+            msg: 'onScaleEnd'
+        );
+      },
+      // 长按
+      onLongPress: () {
+        Fluttertoast.showToast(
+            msg: 'onLongPress'
+        );
+      },
       child: Container(
-        height: 36.0,
+        height: 96.0,
         padding: const EdgeInsets.all(8.0),
         margin: const EdgeInsets.symmetric(horizontal: 8.0),
         decoration: BoxDecoration(
