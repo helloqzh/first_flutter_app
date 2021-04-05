@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 void main() {
   // runApp 函数会持有传入的 Widget，并使它成为 widget 树中的根节点
@@ -9,6 +10,32 @@ void main() {
         home: TutorialHome(),
       )
   );
+}
+
+class MyButton extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Fluttertoast.showToast(
+            msg: 'MyButton was tapped!'
+        );
+      },
+      child: Container(
+        height: 36.0,
+        padding: const EdgeInsets.all(8.0),
+        margin: const EdgeInsets.symmetric(horizontal: 8.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5.0),
+          color: Colors.lightGreen[500],
+        ),
+        child: Center(
+          child: Text('Engage'),
+        ),
+      ),
+    );
+  }
 }
 
 class TutorialHome extends StatelessWidget {
@@ -32,7 +59,7 @@ class TutorialHome extends StatelessWidget {
         ],
       ),
       body: Center(
-        child: Text('Hello, world!'),
+        child: MyButton(),
       ),
       floatingActionButton: FloatingActionButton(
         tooltip: 'Add',
