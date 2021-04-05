@@ -12,6 +12,40 @@ void main() {
   );
 }
 
+// Widget 和 State 的生命周期不一样，所以需要分开
+// Widget 是临时对象，而 State 在调用 build() 之间是持久的，以此来存储信息
+class Counter extends StatefulWidget {
+  @override
+  _CounterState createState() => _CounterState();
+}
+
+class _CounterState extends State<Counter> {
+  int _counter = 0;
+
+  void _increment() {
+    setState(() {
+      _counter++;
+    });
+  }
+
+  void _reset() {
+    setState(() {
+      _counter = 0;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        ElevatedButton(onPressed: _increment, child: Text('Increment')),
+        ElevatedButton(onPressed: _reset, child: Text('Reset')),
+        Text('Count: $_counter'),
+      ],
+    );
+  }
+}
+
 class MyButton extends StatelessWidget {
 
   @override
@@ -74,7 +108,7 @@ class TutorialHome extends StatelessWidget {
         ],
       ),
       body: Center(
-        child: MyButton(),
+        child: Counter(),
       ),
       floatingActionButton: FloatingActionButton(
         tooltip: 'Add',
