@@ -5,12 +5,42 @@ void main() {
   // 框架会强制让根 widget 铺满整个屏幕
   runApp(
       MaterialApp(
-        title: 'My app',
-        home: SafeArea(
-          child: MyScaffold(),
-        ),
+        title: 'Flutter Tutorial',
+        home: TutorialHome(),
       )
   );
+}
+
+class TutorialHome extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+            icon: Icon(Icons.menu),
+            tooltip: 'Navigation menu',
+            onPressed: null
+        ),
+        title: Text('Example title'),
+        actions: [
+          IconButton(
+              icon: Icon(Icons.search),
+              tooltip: 'Search',
+              onPressed: null
+          ),
+        ],
+      ),
+      body: Center(
+        child: Text('Hello, world!'),
+      ),
+      floatingActionButton: FloatingActionButton(
+        tooltip: 'Add',
+        child: Icon(Icons.add),
+        onPressed: null,
+      ),
+    );
+  }
 }
 
 class MyAppBar extends StatelessWidget {
