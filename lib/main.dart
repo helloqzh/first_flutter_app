@@ -43,6 +43,12 @@ class _ShoppingListState extends State<ShoppingList> {
   }
 
   @override
+  /// 重写 initState 来完成只需要发生一次的工作
+  void initState() {
+    Fluttertoast.showToast(msg: 'ShoppingListState init.');
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -59,6 +65,13 @@ class _ShoppingListState extends State<ShoppingList> {
         }).toList(),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // 这个消息已经看不到了，应该是因为资源已经被回收掉了
+    Fluttertoast.showToast(msg: 'ShoppingListState dispose.');
+    super.dispose();
   }
 }
 
