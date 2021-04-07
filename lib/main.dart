@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -7,16 +9,63 @@ void main() {
   runApp(
       MaterialApp(
         title: 'Flutter Tutorial',
-        home: ShoppingList(
-          products: [
-            Product(name: 'Eggs'),
-            Product(name: 'Flour'),
-            Product(name: 'Chocolate chips')
-          ],
-        ),
+        home: RandomImageWidget(),
       )
   );
 }
+
+class RandomImageWidget extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _ImageState();
+  }
+}
+
+class _ImageState extends State<RandomImageWidget> {
+  final fruits = [
+    "001-lemon.png",
+    "002-apple.png",
+    "003-guava.png",
+    "004-mangosteen.png",
+    "005-coconut.png",
+    "006-papaya.png",
+    "007-pineapple.png",
+    "008-kiwi.png",
+    "009-star fruit.png",
+    "010-dragon fruit.png",
+  ];
+  String currentFruit;
+
+  _ImageState() {
+    // 静态资源的路径以工程目录为根目录
+    this.currentFruit = 'images/${fruits[Random().nextInt(fruits.length)]}';
+  }
+
+  void _handleTap() {
+    setState(() {
+      this.currentFruit = 'images/${fruits[Random().nextInt(fruits.length)]}';
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: _handleTap,
+      child: Container(
+        padding: EdgeInsets.all(8.0),
+        color: Colors.white,
+        child: Center(
+          child: Image(
+            image: AssetImage(currentFruit),
+            // color: widget.square.activate ? Colors.lightGreen : Colors.black12,
+          ),
+        ),
+      ),
+    );
+  }
+  
+}
+
 
 class ShoppingList extends StatefulWidget {
   ShoppingList({Key key, this.products}) : super(key: key);
@@ -45,6 +94,7 @@ class _ShoppingListState extends State<ShoppingList> {
   @override
   /// 重写 initState 来完成只需要发生一次的工作
   void initState() {
+    super.initState();
     Fluttertoast.showToast(msg: 'ShoppingListState init.');
   }
 
