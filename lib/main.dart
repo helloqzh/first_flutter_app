@@ -9,12 +9,33 @@ void main() {
   runApp(
       MaterialApp(
         title: 'Flutter Tutorial',
-        home: RandomImageWidget(),
+        home: Layout(6, 12),
       )
   );
 }
 
+class Layout extends StatelessWidget {
+  final int width;
+  final int height;
+  Layout(this.width, this.height);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(8),
+      child: ListView(
+        children: List.filled(height, Row(
+          mainAxisSize: MainAxisSize.min,
+          children: List.filled(width, RandomImageWidget(60)),
+        )),
+      ),
+    );
+  }
+}
+
 class RandomImageWidget extends StatefulWidget {
+  final int size;
+  RandomImageWidget(this.size);
   @override
   State<StatefulWidget> createState() {
     return _ImageState();
@@ -52,13 +73,14 @@ class _ImageState extends State<RandomImageWidget> {
     return GestureDetector(
       onTap: _handleTap,
       child: Container(
-        padding: EdgeInsets.all(8.0),
-        color: Colors.white,
-        child: Center(
-          child: Image(
-            image: AssetImage(currentFruit),
-            // color: widget.square.activate ? Colors.lightGreen : Colors.black12,
-          ),
+        decoration: BoxDecoration(
+            border: Border.all(color: Colors.blueAccent, width: 0.5),
+            color: Colors.white
+        ),
+        child: Image(
+          image: AssetImage(currentFruit),
+          width: widget.size.toDouble(),
+          height: widget.size.toDouble(),
         ),
       ),
     );
