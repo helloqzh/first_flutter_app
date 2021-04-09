@@ -58,6 +58,7 @@ class _ImageState extends State<RandomImageWidget> {
     "010-dragon fruit.png",
   ];
   String currentFruit;
+  bool _visible = true;
 
   _ImageState() {
     // 静态资源的路径以工程目录为根目录
@@ -66,7 +67,7 @@ class _ImageState extends State<RandomImageWidget> {
 
   void _handleTap() {
     setState(() {
-      this.currentFruit = 'images/${fruits[Random().nextInt(fruits.length)]}';
+      _visible = !_visible;
     });
   }
 
@@ -79,8 +80,12 @@ class _ImageState extends State<RandomImageWidget> {
             border: Border.all(color: Colors.blueAccent, width: 0.5),
             color: Colors.white
         ),
-        child: Image(
-          image: AssetImage(currentFruit)
+        child: AnimatedOpacity(
+          opacity: _visible ? 1.0 : 0.0,
+          duration: Duration(milliseconds: 1000),
+          child: Image(
+              image: AssetImage(currentFruit)
+          ),
         ),
       ),
     );
