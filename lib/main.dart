@@ -9,7 +9,7 @@ void main() {
   runApp(
       MaterialApp(
         title: 'Flutter Tutorial',
-        home: Layout(6, 12),
+        home: Layout(10, 10),
       )
   );
 }
@@ -26,7 +26,11 @@ class Layout extends StatelessWidget {
       child: ListView(
         children: List.filled(height, Row(
           mainAxisSize: MainAxisSize.min,
-          children: List.filled(width, RandomImageWidget(60)),
+          children: List.filled(width, Expanded(
+            // 一行里的元素会根据 flex 来决定占比
+            flex: 1,
+            child: RandomImageWidget(),
+          )),
         )),
       ),
     );
@@ -34,8 +38,6 @@ class Layout extends StatelessWidget {
 }
 
 class RandomImageWidget extends StatefulWidget {
-  final int size;
-  RandomImageWidget(this.size);
   @override
   State<StatefulWidget> createState() {
     return _ImageState();
@@ -78,9 +80,7 @@ class _ImageState extends State<RandomImageWidget> {
             color: Colors.white
         ),
         child: Image(
-          image: AssetImage(currentFruit),
-          width: widget.size.toDouble(),
-          height: widget.size.toDouble(),
+          image: AssetImage(currentFruit)
         ),
       ),
     );
