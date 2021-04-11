@@ -1,6 +1,8 @@
 import 'dart:math';
 
+import 'package:first_flutter_app/bean/game.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 void main() {
@@ -9,42 +11,17 @@ void main() {
   runApp(
       MaterialApp(
         title: 'Flutter Tutorial',
-        home: Layout(10, 10),
+        home: SquareBoardLayout(),
       )
   );
 }
 
-class Layout extends StatelessWidget {
-  final int width;
-  final int height;
-  Layout(this.width, this.height);
-
+class SquareBoardLayout extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(8),
-      child: ListView(
-        children: List.filled(height, Row(
-          mainAxisSize: MainAxisSize.min,
-          children: List.filled(width, Expanded(
-            // 一行里的元素会根据 flex 来决定占比
-            flex: 1,
-            child: RandomImageWidget(),
-          )),
-        )),
-      ),
-    );
-  }
+  _SquareBoardLayoutState createState() => _SquareBoardLayoutState();
 }
 
-class RandomImageWidget extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _ImageState();
-  }
-}
-
-class _ImageState extends State<RandomImageWidget> {
+class _SquareBoardLayoutState extends State<SquareBoardLayout> {
   final fruits = [
     "001-lemon.png",
     "002-apple.png",
@@ -56,18 +33,48 @@ class _ImageState extends State<RandomImageWidget> {
     "008-kiwi.png",
     "009-star fruit.png",
     "010-dragon fruit.png",
-  ];
-  String currentFruit;
-  bool _visible = true;
+  ].map((e) => 'images/$e').toList();
+  SquareBoard squareBoard;
 
-  _ImageState() {
-    // 静态资源的路径以工程目录为根目录
-    this.currentFruit = 'images/${fruits[Random().nextInt(fruits.length)]}';
+
+
+  @override
+  Future<void> initState() {
+    squareBoard = SquareBoard(10, 10, fruits);
   }
 
+  @override
+  Widget build(BuildContext context) {
+    var rows = squareBoard.currentBoard.map((e) => Row(
+      mainAxisSize: MainAxisSize.min,
+      children: e.map((e) => Expanded(
+          flex: 1,
+          child: RandomImageWidget(e))).toList(),
+    )).toList();
+    return Container(
+      padding: EdgeInsets.all(8),
+      child: ListView(
+        children: rows,
+      ),
+    );
+  }
+}
+
+class RandomImageWidget extends StatefulWidget {
+  final Square square;
+
+  RandomImageWidget(this.square);
+
+  @override
+  State<StatefulWidget> createState() {
+    return _ImageState();
+  }
+}
+
+class _ImageState extends State<RandomImageWidget> {
   void _handleTap() {
     setState(() {
-      _visible = !_visible;
+      widget.square.visible = !widget.square.visible;
     });
   }
 
@@ -81,10 +88,10 @@ class _ImageState extends State<RandomImageWidget> {
             color: Colors.white
         ),
         child: AnimatedOpacity(
-          opacity: _visible ? 1.0 : 0.0,
+          opacity: widget.square.visible ? 1.0 : 0.0,
           duration: Duration(milliseconds: 1000),
           child: Image(
-              image: AssetImage(currentFruit)
+              image: AssetImage(widget.square.image)
           ),
         ),
       ),
